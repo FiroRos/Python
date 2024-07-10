@@ -74,40 +74,38 @@ def check_horizontal_win(board): #self explanatory
         for i in row:
             if i == "✪": #counting consecutive pieces of player 1
                 player_one_win += 1
+                player_two_win = 0
                 if player_one_win == 4:
                     return True
-            else:
-                player_one_win = 0 #resets if theres a piece other than player 1's
-
-            if i == "◍": #counting consecutive pieces of player 2
+            elif i == "◍": #counting consecutive pieces of player 2
                 player_two_win += 1
+                player_one_win = 0
                 if player_two_win == 4:
                     return True 
             else:
-                player_two_win = 0 #resets if theres a piece other than player 2's
+                player_one_win = 0 #resets if theres an empty place
+                player_two_win = 0
     return False
 
 
 def check_vertical_win(board): #self explanatory
-    player_one_win = 0
-    player_two_win = 0
-    col = -1
-    while col <= 5: #uhh.. what? check on this
-        col += 1
+    for col in range(len(board[0])): 
+        player_one_win = 0
+        player_two_win = 0
         for row in board:
             if row[col] == "✪": #counting consecutive pieces of player 1
                 player_one_win += 1
+                player_two_win = 0
                 if player_one_win == 4:
                     return True
-            else:
-                player_one_win = 0
-            
-            if row[col] == "◍": #counting consecutive pieces of player 2
+            elif row[col] == "◍": #counting consecutive pieces of player 2
                 player_two_win += 1
+                player_one_win = 0
                 if player_two_win == 4:
                     return True
             else:
                 player_two_win = 0
+                player_one_win = 0
     return False
 
 
@@ -117,11 +115,11 @@ def check_diagonal(board): #self explanatory
     cols = len(board[0])
     for row in range(rows):
         for col in range(cols):
-            if row + 3 < rows and col + 3 < cols:
-                if board[row][col] == board[row + 1][col + 1] == board[row + 2][col + 2] == board[row + 3][col + 3] and board[row][col] == "✪" or board[row][col] == "◍":
+            if row + 3 < rows and col + 3 < cols: #checks if it has sapce for a "\" diagonal
+                if (board[row][col] == board[row + 1][col + 1] == board[row + 2][col + 2] == board[row + 3][col + 3]) and (board[row][col] == "✪" or board[row][col] == "◍"):
                     return True
-            if row + 3 < rows and col - 3 >= 0:
-                if board[row][col] == board[row + 1][col - 1] == board[row + 2][col - 2] == board [row + 3][col - 3] and board[row][col] == "✪" or board[row][col] == "◍":
+            if row + 3 < rows and col - 3 >= 0: #checks if it has sapce for a "/" diagonal
+                if (board[row][col] == board[row + 1][col - 1] == board[row + 2][col - 2] == board [row + 3][col - 3]) and (board[row][col] == "✪" or board[row][col] == "◍"):
                     return True
     return False
 
