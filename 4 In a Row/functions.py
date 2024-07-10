@@ -1,6 +1,8 @@
 import time
 import os
 
+
+
 ###############################################################PRINT FUNCTIONS
 
 def print_board(board): #prints the board nicely
