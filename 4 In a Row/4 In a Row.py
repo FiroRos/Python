@@ -1,4 +1,4 @@
-import functions
+import functions as fns
 
 
 ###################################################################VRIABLES
@@ -22,46 +22,46 @@ board_full = False
 ###################################################################THE GAME
 
 while win_vert == False and win_hor == False and win_diag == False and board_full == False:
-    functions.print_board(board)
+    fns.print_board(board)
     if turn == True: #player 1 turn
         choice = input("Choose a column "+player_one_name+": ")
         if choice.lower() not in ["a", "b", "c", "d", "e", "f", "g"]: #checks for a valid input
-            functions.not_a_column(board)
+            fns.not_a_column(board)
         else:
-            column = functions.choice_translate(choice) #decides where the piece will end up
+            column = fns.choice_translate(choice) #decides where the piece will end up
             if board [0][column] == "○": #checks i fthe column is not full
-                functions.place(board, turn, column)
-                functions.print_board(board)
-                win_vert = functions.check_vertical_win(board)
-                win_hor = functions.check_horizontal_win(board)
-                win_diag = functions.check_diagonal(board)
-                board_full = functions.full_board(board)
+                fns.place(board, turn, column)
+                fns.print_board(board)
+                win_vert = fns.check_vertical_win(board)
+                win_hor = fns.check_horizontal_win(board)
+                win_diag = fns.check_diagonal(board)
+                board_full = fns.full_board(board)
                 turn = False
-                functions.clear_screen_os()
+                fns.clear_screen_os()
             else:
-                functions.full_column()
+                fns.full_column()
     
     elif turn == False: #player 2 turn
         choice = input("Choose a column "+player_two_name+": ")
         if choice.lower() not in ["a", "b", "c", "d", "e", "f", "g"]:
-            functions.not_a_column(board)
+            fns.not_a_column(board)
         else:  
-            column = functions.choice_translate(choice)
+            column = fns.choice_translate(choice)
             if board [0][column] == "○":
-                functions.place(board, turn, column)
-                functions.print_board(board)
-                win_vert = functions.check_vertical_win(board)
-                win_hor = functions.check_horizontal_win(board)
-                win_diag = functions.check_diagonal(board)
-                board_full = functions.full_board(board)
+                fns.place(board, turn, column)
+                fns.print_board(board)
+                win_vert = fns.check_vertical_win(board)
+                win_hor = fns.check_horizontal_win(board)
+                win_diag = fns.check_diagonal(board)
+                board_full = fns.full_board(board)
                 turn = True
-                functions.clear_screen_os()
+                fns.clear_screen_os()
             else:
-                functions.full_column()
+                fns.full_column()
 
 ###################################################################END OF GAME
 
-functions.print_board(board)
+fns.print_board(board)
 if board_full == True: #checks if the board is full
     print("It's a tie!")
 else: #determines who won
