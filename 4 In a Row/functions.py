@@ -1,12 +1,28 @@
 import time
 import os
 
+###############################################################PRINT FUNCTIONS
 
 def print_board(board): #prints the board nicely
     print("A  B  C  D  E  F  G")
     for index, row in enumerate(board):     #"index, row" => a single tuple (1, something)
         print('  '.join(str(i) for i in row)) #learn more about this!!!
 
+
+def not_a_column(board):
+    clear_screen_os()
+    print("Not a valid column!\nPlease select a column from A-G!")
+    time.sleep(2)
+    clear_screen_os()
+    
+
+def full_column():
+    clear_screen_os()
+    print("This column is full! Please select anther column!")
+    time.sleep(2)
+    clear_screen_os()
+
+###############################################################TRANSLATORS
 
 def clear_screen_os(): #clears terminal
     if os.name == "nt":  #nt == windows
@@ -32,40 +48,35 @@ def choice_translate(choice): #translates between letters to the column's index
         column = 6
     return column
 
+###############################################################
 
-def place(board, turn, column): #determines if where to positon the piece
-    clear_screen_os()
-    row = -1
-    for i in board:
-        row += 1 
-        if turn == True and board[row][column] == "○": #player 1 animation
-            board[row][column] = "✪"
-            print_board(board)
-            time.sleep(0.1)
-            board[row][column] = "○"
-
-        elif turn == False and board[row][column] == "○": #player 2 animation
-            board[row][column] = "◍"
-            print_board(board)
-            time.sleep(0.1)
-            board[row][column] = "○"
-
-        if board[row][column] != "○": #checks if a position is occupied and if so, palces a piece above
-            if turn == True:
-                board[row-1][column] = "✪"
-                break
-            else:
-                board[row-1][column] = "◍"
-                break
-        elif row == 5: #checks if it has reached the bottom of the board
-            if turn == True:
+def place(board, turn, column):
+    for row in range(len(board)):
+        if board[row][column] == "○":  # Check for empty position
+            if turn:
                 board[row][column] = "✪"
-                break
             else:
                 board[row][column] = "◍"
+            print_board(board)
+            time.sleep(0.1)
+            clear_screen_os()
+            board[row][column] = "○"
+        else:  # If the position is occupied
+            if row > 0:  # Place the piece above the occupied position
+                if turn:
+                    board[row-1][column] = "✪"
+                else:
+                    board[row-1][column] = "◍"
                 break
-        clear_screen_os()
+        if row == len(board) - 1:  # If it has reached the bottom of the board
+            if turn:
+                board[row][column] = "✪"
+            else:
+                board[row][column] = "◍"
+            break
+    clear_screen_os()
 
+###############################################################WINNING CONDITIONS
 
 def check_horizontal_win(board): #self explanatory
     for row in board:
@@ -108,8 +119,6 @@ def check_vertical_win(board): #self explanatory
                 player_one_win = 0
     return False
 
-
-
 def check_diagonal(board): #self explanatory
     rows = len(board) #measure the board
     cols = len(board[0])
@@ -123,13 +132,5 @@ def check_diagonal(board): #self explanatory
                     return True
     return False
 
+###############################################################
 
-def not_a_column(board):
-    clear_screen_os()
-    print("Not a valid column!\nPlease select a column from A-G!")
-    time.sleep(3)
-    clear_screen_os()
-    
-
-def full_column():
-    print("This column is full! Please select anther column!")
