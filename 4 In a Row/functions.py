@@ -48,7 +48,7 @@ def choice_translate(choice): #translates between letters to the column's index
         column = 6
     return column
 
-###############################################################
+###############################################################CHECK FOR...
 
 def place(board, turn, column):
     for row in range(len(board)):
@@ -75,6 +75,16 @@ def place(board, turn, column):
                 board[row][column] = "◍"
             break
     clear_screen_os()
+
+def full_board(board): 
+    places = 0
+    for row in board: 
+        for i in row:
+            if i != "○": #counts occupied spaces
+                places += 1
+                if places == 42: #42 occupied spaces == empty places on the board
+                    return True
+    return False
 
 ###############################################################WINNING CONDITIONS
 
