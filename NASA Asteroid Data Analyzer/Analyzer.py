@@ -88,20 +88,7 @@ def common_orbit(no_names_ndarray): #סעיף ז
 
 ###########################################################################
 
-def min_max_diameter1(no_names_ndarray): #סעיף ח' שתי פונקציות כי המשימה לא ברורה
-    iterations = 0                       #returns the average of all min diameters and the average of all max diameters
-    min_dia_sum = 0
-    max_dia_sum  = 0
-    for row in no_names_ndarray:
-        iterations += 1
-        min_dia_sum += float(str(row[3]))
-        max_dia_sum += float(str(row[4]))
-    min_dia_avg = min_dia_sum / iterations
-    max_dia_avg = max_dia_sum / iterations
-    tuple = (min_dia_avg, max_dia_avg)
-    return tuple
-
-def min_max_diameter2(no_names_ndarray): #returns the smallest and biggest average diameter PER ASTEROID
+def min_max_diameter_range(no_names_ndarray): #returns the smallest and biggest average diameter PER ASTEROID
     list = []
     for row in no_names_ndarray:
         min_dia = float(str(row[3]))
@@ -126,31 +113,14 @@ def average_diameter_list(no_names_ndarray): #returns the smallest and biggest a
 
 
 def plt_hist_diameter(no_names_ndarray, min_max_dia):
-    list = []
+    range_list = []
     asteroid_per_range = []
-    hist_x = []
-    list_lentgh = len(min_max_dia)
-    list_part_length_remainder = list_lentgh % 10 #7
-    list_part_length = list_lentgh//10 #468
-    list_split_start = 0
-    list_split_end = list_part_length
+    avg_increment = (min_max_dia[1] - min_max_dia[0])/10
     for i in range(10):
-        if i == 9:
-            list_split_end += list_part_length_remainder
-        list.append(min_max_dia[list_split_start:list_split_end])
-        list_split_start = list_split_end
-        list_split_end += list_part_length
+        range_list.append((min_max_dia[0] + avg_increment*i))
+        i += 1
+    return range_list
 
-    for i in list:
-        hist_x.append([str(i[0]) + "-" + str(i[-1])])
-    
-    for i in list:
-        asteroid_count = 0
-        for asteroid in i:
-            asteroid_count += 1
-        asteroid_per_range.append(asteroid_count)
-             
-    return asteroid_per_range
     
 
 
@@ -175,9 +145,10 @@ no_names_ndarray = scoping_data(ndarray)
 
 Dangerous_asteroids = mask_data(no_names_ndarray)
 
-min_max_dia = average_diameter_list(no_names_ndarray)
+min_max_dia = min_max_diameter_range(no_names_ndarray)
 #print(min_max_dia)
-
+print(average_diameter_list(no_names_ndarray))
+print(min_max_diameter_range(no_names_ndarray))
 
 print((plt_hist_diameter(no_names_ndarray, min_max_dia)))
 #test = plt_hist_diameter(no_names_ndarray, min_max_dia)
