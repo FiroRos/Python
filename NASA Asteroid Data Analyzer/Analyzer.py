@@ -125,17 +125,42 @@ def average_diameter_list(no_names_ndarray): #returns the smallest and biggest a
 ###########################################################################
 
 
-def plt_hist_diameter(no_names_ndarray, min_max_dia):
+def plt_hist_diameter(average_dia_list, min_max_dia):
+    range_list_bar_names = []
+    asteroid_number_list = []
     range_list = []
-    asteroid_per_range = []
-    avg_increment = (min_max_dia[1] - min_max_dia[0])/10
-    for i in range(10):
-        range_list.append((min_max_dia[0] + avg_increment*i))
-        i += 1
-    return range_list
+    log_space = np.logspace(np.log10(min_max_dia[0]), np.log10(min_max_dia[1]), num=11) #logrithmic divison of the range (10 ranges)
+    print(log_space)
+    for i in range(len(log_space) - 1): 
+        range_list.append(float(log_space[i])) #defines the ranges
+        range_list.append(float(log_space[i+1]))
+        range_list_bar_names.append(str(log_space[i]) + "-\n" + str(log_space[i+1])) #creates the names of the bars
+
+    min = 0
+    max = 1
+    for i in range(len(range_list_bar_names)):
+        asteroid_count = 0
+        for asteroid_dia in average_dia_list:
+            if asteroid_dia >= range_list[min] and asteroid_dia <= range_list[max]:
+                asteroid_count +=1
+        min += 2
+        max += 2
+        asteroid_number_list.append(asteroid_count)
+    #building the graph
+    plt.figure(figsize=(15, 6))
+    plt.xticks(fontsize=5)
+    bars = plt.bar(range_list_bar_names, asteroid_number_list)
+    for bar in bars: #adds the number of asteroids above the bar to make the graph easier to understand
+        yval = bar.get_height()
+        plt.text(bar.get_x() + bar.get_width()/2, yval + 0.5, round(yval, 1), ha='center', va='bottom', fontsize=10)
+    plt.xlabel("Average Diameter") 
+    plt.ylabel("Number Of Asteroids")   
+    plt.title("Asteroids Per Diameter")
+    plt.show()
+    print(asteroid_number_list)
 
     
-
+#f"Range {i+1}: {log_space[i]} to {log_space[i+1]}")
 
 
 
@@ -156,16 +181,10 @@ ndarray = load_data(excel_file)
 
 no_names_ndarray = no_names_row(ndarray)
 
-Dangerous_asteroids = mask_data(no_names_ndarray)
-
 min_max_dia = min_max_diameter_range(no_names_ndarray)
-#print(min_max_dia)
-#print(average_diameter_list(no_names_ndarray))
-#print(min_max_diameter_range(no_names_ndarray))
 
-#print((plt_hist_diameter(no_names_ndarray, min_max_dia)))
-#test = plt_hist_diameter(no_names_ndarray, min_max_dia)
-#print(len(test[0]))
+average_dia_list = average_diameter_list(no_names_ndarray)
 
-print(scopiong_data(ndarray, names))
-print(names[4].title())
+
+
+plt_hist_diameter(average_dia_list, min_max_dia)
