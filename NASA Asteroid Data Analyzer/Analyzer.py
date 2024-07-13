@@ -165,7 +165,6 @@ def plt_hist_diameter(): #section I
 ########################################################################### 11
 
 def plt_hist_common_orbit():
-    print("Crunching the numbers...\nPlease standby...")
     orbit_range = []
     orbit_range_list_bar_names = []
     asteroid_number_per_orbit = []
@@ -198,26 +197,52 @@ def plt_hist_common_orbit():
     plt.title("Asteroids Per Orbit Range")
     plt.show()
 
-###########################################################################    
+########################################################################### 13
 
+def plt_pie_hazard():
+    hazardous = 0
+    non_hazardous = 0
+    for row in no_names_row():
+        if row[39] == "True":
+            hazardous += 1
+        elif row[39] == "False":
+            non_hazardous += 1
+    sizes = [hazardous, non_hazardous]
+    labels = ["Hazardous", "Non-Hazrdous"]
+    def absolute_value(val):
+        total = sum(sizes)
+        value = int(val / 100 * total)
+        return f'{value}' 
+    fig, ax = plt.subplots()
+    ax.pie(sizes, labels=labels, autopct=absolute_value)
+    plt.show()
+
+###########################################################################
 print("Welcome! This project is about proccessing data extracted from an Excell file!")
 time.sleep(1.5)
 while quit == False:
     user_input = input("What would you like to see (1-5)? (type H to show available options and Q to quit): ")
     if user_input in ["1", "2", "3", "4", "5", "h", "H", "q", "Q"]:
         if user_input.lower() == "h":
-            print("The available options are:\n1: A histogram graph that shows the number of asteroids per diameter range\n2: A histogram graph that shows the number of asteroids per orbit range")
+            print("The available options are:\n(1)   A histogram graph that shows the number of asteroids per diameter range\n(2)   A histogram graph that shows the number of asteroids per orbit range\n(3)   A pie chart displaying the number of hazardous and non-hazardous asteroids ")
         elif user_input.lower() == "q":
             print("Terminating program... :(")
             time.sleep(1)
             clear_screen_os()
             quit = True
         elif user_input == "1":
+            print("Crunching the numbers...\nPlease standby...")
             plt_hist_diameter()
             clear_screen_os()
         elif user_input == "2":
+            print("Crunching the numbers...\nPlease standby...")
             plt_hist_common_orbit()
             clear_screen_os()
+        elif user_input == "3":
+            print("Crunching the numbers...\nPlease standby...")
+            plt_pie_hazard()
+            clear_screen_os()
+
 
 
     else:
