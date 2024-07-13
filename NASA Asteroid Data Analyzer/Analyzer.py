@@ -218,13 +218,37 @@ def plt_pie_hazard():
     plt.show()
 
 ###########################################################################
+
+def plt_linear_motion_magnitude():
+    abs_mag = []
+    mph = []
+    for row in no_names_row():
+        abs_mag.append(float(str(row[2])))
+        mph.append(float(str(row[15])))
+
+    coef = np.polyfit(abs_mag, mph, 1)
+    poly1d_fn = np.poly1d(coef) 
+    plt.plot(abs_mag, mph, 'yo', label='Data Points')  # Yellow circles for the data points
+    plt.plot(abs_mag, poly1d_fn(abs_mag), '--k', label='Linear Fit')  # Blackline for the fit
+    plt.xlim(min(abs_mag) - 1, max(abs_mag) + 1)
+    plt.ylim(min(mph) - 1, max(mph) + 1)
+    plt.xlabel('Absolute Magnitude')
+    plt.ylabel('Miles Per Hour')
+    plt.title('Linear Regression of Between Absolute Magnitude and Miles Per Hour')
+    plt.legend()
+    plt.show()
+    
+
+    
+###########################################################################
+
 print("Welcome! This project is about proccessing data extracted from an Excell file!")
 time.sleep(1.5)
 while quit == False:
-    user_input = input("What would you like to see (1-5)? (type H to show available options and Q to quit): ")
-    if user_input in ["1", "2", "3", "4", "5", "h", "H", "q", "Q"]:
+    user_input = input("What would you like to see (1-4)? (type H to show available options and Q to quit): ")
+    if user_input in ["1", "2", "3", "4", "h", "H", "q", "Q"]:
         if user_input.lower() == "h":
-            print("The available options are:\n(1)   A histogram graph that shows the number of asteroids per diameter range\n(2)   A histogram graph that shows the number of asteroids per orbit range\n(3)   A pie chart displaying the number of hazardous and non-hazardous asteroids ")
+            print("The available options are:\n(1)   A histogram graph that shows the number of asteroids per diameter range\n(2)   A histogram graph that shows the number of asteroids per orbit range\n(3)   A pie chart displaying the number of hazardous and non-hazardous asteroids\n(4)   A linear regression graph that shows the correlation between the speed of the asteroid and its magnitude\n \n ")
         elif user_input.lower() == "q":
             print("Terminating program... :(")
             time.sleep(1)
@@ -242,6 +266,11 @@ while quit == False:
             print("Crunching the numbers...\nPlease standby...")
             plt_pie_hazard()
             clear_screen_os()
+        elif user_input == "4":
+            print("Crunching the numbers...\nPlease standby...")
+            plt_linear_motion_magnitude()
+            clear_screen_os()
+
 
 
 
