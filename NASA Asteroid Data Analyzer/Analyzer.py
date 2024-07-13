@@ -39,7 +39,7 @@ def scopiong_data(ndarray, names):
     cols_to_delete = []
     for title in ndarray[0]:
         for name in names:
-            if name.title() == title:
+            if name.lower() == title.lower():
                 cols_to_delete.append(col)
         col +=1
     new_array = np.delete(ndarray, [cols_to_delete], axis=1)
@@ -148,7 +148,7 @@ def plt_hist_diameter(no_names_ndarray, min_max_dia):
 
 
      
-names = ["absolute magnitude", "name"]
+names = ["absolute magnitude", "name", "Close Approach Date", "est dia in KM(max)", "miss Dist.(Astronomical)"]
 
 
 
@@ -168,3 +168,4 @@ min_max_dia = min_max_diameter_range(no_names_ndarray)
 #print(len(test[0]))
 
 print(scopiong_data(ndarray, names))
+print(names[4].title())
