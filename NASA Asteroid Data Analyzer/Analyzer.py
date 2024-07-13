@@ -28,9 +28,22 @@ def load_data(excel_file): #סעיף א
 
 ###########################################################################
 
-def scoping_data(ndarray): #סעיף ב
-     delete_ndarray_names = np.delete(ndarray, 0, 0)
-     return delete_ndarray_names
+def no_names_row(ndarray): #help function
+    delete_ndarray_names = np.delete(ndarray, 0, 0)
+    return delete_ndarray_names
+
+###########################################################################
+
+def scopiong_data(ndarray, names):
+    col = 0
+    cols_to_delete = []
+    for title in ndarray[0]:
+        for name in names:
+            if name.title() == title:
+                cols_to_delete.append(col)
+        col +=1
+    new_array = np.delete(ndarray, [cols_to_delete], axis=1)
+    return new_array
 
 ###########################################################################
 
@@ -135,21 +148,23 @@ def plt_hist_diameter(no_names_ndarray, min_max_dia):
 
 
      
-
+names = ["absolute magnitude", "name"]
 
 
 
 ndarray = load_data(excel_file)
 
-no_names_ndarray = scoping_data(ndarray)
+no_names_ndarray = no_names_row(ndarray)
 
 Dangerous_asteroids = mask_data(no_names_ndarray)
 
 min_max_dia = min_max_diameter_range(no_names_ndarray)
 #print(min_max_dia)
-print(average_diameter_list(no_names_ndarray))
-print(min_max_diameter_range(no_names_ndarray))
+#print(average_diameter_list(no_names_ndarray))
+#print(min_max_diameter_range(no_names_ndarray))
 
-print((plt_hist_diameter(no_names_ndarray, min_max_dia)))
+#print((plt_hist_diameter(no_names_ndarray, min_max_dia)))
 #test = plt_hist_diameter(no_names_ndarray, min_max_dia)
 #print(len(test[0]))
+
+print(scopiong_data(ndarray, names))
