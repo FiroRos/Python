@@ -2,18 +2,14 @@ import csv
 import numpy as np
 import matplotlib.pyplot as plt
 import time
+import math
+import os
 
 ########################################################################### Variables
 
 excel_file = "nasa.csv"
 names = ["absolute magnitude", "name", "Close Approach Date", "est dia in KM(max)", "miss Dist.(Astronomical)"]
-
-print("Welcome! This project is about proccessing data extracted from an Excell file!")
-time.sleep(0.5)
-user_input = input("What would you like to see? (type H to show available options): ")
-
-if user_input.lower() == "h":
-    print("The available options are:\n1: A histogram graph that shows the number of asteroids in orbit per diameter range\n2:")
+quit = False
 
 ########################################################################### 1          
 
@@ -31,6 +27,12 @@ def load_data(excel_file): #section A
 def no_names_row(): #help function
     delete_ndarray_names = np.delete(load_data(excel_file), 0, 0)
     return delete_ndarray_names
+
+def clear_screen_os(): #clears terminal
+    if os.name == "nt":  #nt == windows
+        _ = os.system("cls")
+    else: #mac & linux
+        _ = os.system("clear")
 
 ########################################################################### 3
 
@@ -133,7 +135,6 @@ def plt_hist_diameter(): #section I
     asteroid_number_list = []
     range_list = []
     log_space = np.logspace(np.log10(min_max_dia[0]), np.log10(min_max_dia[1]), num=11) #logrithmic divison of the range (10 ranges)
-    print(log_space)
     for i in range(len(log_space) - 1): 
         range_list.append(float(log_space[i])) #defines the ranges
         range_list.append(float(log_space[i+1]))
@@ -156,22 +157,73 @@ def plt_hist_diameter(): #section I
     for bar in bars: #adds the number of asteroids above the bar to make the graph easier to understand
         yval = bar.get_height()
         plt.text(bar.get_x() + bar.get_width()/2, yval + 0.5, round(yval, 1), ha='center', va='bottom', fontsize=10)
-    plt.xlabel("Average Diameter") 
+    plt.xlabel("Average Diameter Range") 
     plt.ylabel("Number Of Asteroids")   
-    plt.title("Asteroids Per Diameter")
+    plt.title("Asteroids Per Diameter Range")
     plt.show()
 
 ########################################################################### 11
 
+def plt_hist_common_orbit():
+    print("Crunching the numbers...\nPlease standby...")
+    orbit_range = []
+    orbit_range_list_bar_names = []
+    asteroid_number_per_orbit = []
+    orbit_list = list(map(int, list(common_orbit().keys())))
+    orbit_list_sorted = sorted(orbit_list)
+    log_space = np.logspace(np.log10(orbit_list_sorted[0]), np.log10(orbit_list_sorted[-1]), num=7) #logrithmic divison of the range (6 ranges)
+    orbit_range = [math.ceil(i) for i in log_space]
+    for i in range(6):
+        orbit_range_list_bar_names.append(str(orbit_range[i]) + "-" + str(orbit_range[i+1])) #creates the names of the bars
+    min = 0
+    max = 1
+    for i in range(6):
+        asteroid_count = 0
+        for asteroid in common_orbit().keys():
+            if int(asteroid) >= orbit_range[min] and int(asteroid) <= orbit_range[max]:
+                asteroid_count += common_orbit()[asteroid]
+        min += 1
+        max += 1
+        asteroid_number_per_orbit.append(asteroid_count)
+
+    #building the graph
+    plt.figure(figsize=(15, 6))
+    plt.xticks(fontsize=16)
+    bars = plt.bar(orbit_range_list_bar_names, asteroid_number_per_orbit)
+    for bar in bars: #adds the number of asteroids above the bar to make the graph easier to understand
+        yval = bar.get_height()
+        plt.text(bar.get_x() + bar.get_width()/2, yval + 0.5, round(yval, 1), ha='center', va='bottom', fontsize=10)
+    plt.xlabel("Orbit Range") 
+    plt.ylabel("Number Of Asteroids")   
+    plt.title("Asteroids Per Orbit Range")
+    plt.show()
+
+###########################################################################    
+
+print("Welcome! This project is about proccessing data extracted from an Excell file!")
+time.sleep(1.5)
+while quit == False:
+    user_input = input("What would you like to see (1-5)? (type H to show available options and Q to quit): ")
+    if user_input in ["1", "2", "3", "4", "5", "h", "H", "q", "Q"]:
+        if user_input.lower() == "h":
+            print("The available options are:\n1: A histogram graph that shows the number of asteroids per diameter range\n2: A histogram graph that shows the number of asteroids per orbit range")
+        elif user_input.lower() == "q":
+            print("Terminating program... :(")
+            time.sleep(1)
+            clear_screen_os()
+            quit = True
+        elif user_input == "1":
+            plt_hist_diameter()
+            clear_screen_os()
+        elif user_input == "2":
+            plt_hist_common_orbit()
+            clear_screen_os()
 
 
-
-
-    
+    else:
+        print("Not a valid input! type H for the list of available inputs!")
 
      
      
 
 
-     
-names = ["absolute magnitude", "name", "Close Approach Date", "est dia in KM(max)", "miss Dist.(Astronomical)"]
