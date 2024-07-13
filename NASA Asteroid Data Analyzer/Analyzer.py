@@ -128,7 +128,6 @@ def average_diameter_list(): #returns the list of average diameters of all aster
 
 ########################################################################### 10
 
-
 def plt_hist_diameter(): #section I
     min_max_dia = min_max_diameter()
     range_list_bar_names = []
@@ -238,8 +237,6 @@ def plt_linear_motion_magnitude():
     plt.legend()
     plt.show()
     
-
-    
 ###########################################################################
 
 print("Welcome! This project is about proccessing data extracted from an Excell file!")
@@ -270,10 +267,6 @@ while quit == False:
             print("Crunching the numbers...\nPlease standby...")
             plt_linear_motion_magnitude()
             clear_screen_os()
-
-
-
-
     else:
         print("Not a valid input! type H for the list of available inputs!")
 
